@@ -55,6 +55,6 @@
   + WebSecurity 는 HttpSecurity 에서 생성한 SecurityFilterChain Bean을 SecurityBuilder에 저장한다.
   + WebSecurity 가 build()를 실행하면 <U>**SecurityBuilder**</U> 에서 <U>**SecurityFilterChain**</U> 을 꺼내어 <U>**FilterChaiProxy**</U> 생성자에게 전달한다.
   + 최종 목표 :
-  + WebSecutiry로 FilterChainProxy를 만들 수 있다.
+    + WebSecurity로 FilterChainProxy를 만들 수 있다.
 
 ![img.png](images/WebSecurity.png)
