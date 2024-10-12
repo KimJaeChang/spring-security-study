@@ -37,13 +37,20 @@
 + ### Security FilterChain
   + 메서드 종류
     + > boolean matches(HttpServletRequest request)
-      + 이 메서드는 요청이 현재 SecurityFilterChain에 의해 처리되어야 하는지 여부를 결정한다.
+      + 이 메서드는 <U>**요청이 현재 SecurityFilterChain에 의해 처리되어야 하는지 여부를 결정**</U>한다.
       + true를 반환하면 현재 요청이 이 필터체인에 의해 처리되어야 함을 의미하며, false를 반환하면
         다른 필터 체인이나 처리 로직에 의해 처리되어야 함을 의미한다.
       + 이를 통해 특정 요청에 대해 적절한 보안 필터링 로직이 적용될 수 있도록 한다.
     + > List<Filter> getFilters()
-      + 이 메서드는 현재 SecurityFilterChain에 포함된 Filter 객체의 리스트를 반환한다.
+      + 이 메서드는 현재 <U>**SecurityFilterChain에 포함된 Filter 객체의 리스트를 반환**</U>한다.
       + 이 메서드를 통해 어떤 필터들이 현재 필터 체인에 포함되어 있는지 확인할 수 있으며, 각 필터는
         요청 처리 과정에서 특정 작업 (ex: 인증, 권한부여, 로깅 등)을 수행한다.
 
 ![img.png](images/SecurityFilterChain.png)
+
++ ### WebSecurity
+  + WebSecurityConfiguration 에서 WebSecurity를 생성하고 초기화를 진행한다.
+  + WebSecurity 는 HttpSecurity 에서 생성한 SecurityFilterChain Bean을 SecurityBuilder에 저장한다.
+  + WebSecurity 가 build()를 실행하면 <U>**SecurityBuilder**</U> 에서 <U>**SecurityFilterChain**</U> 을 꺼내어 <U>**FilterChaiProxy**</U> 생성자에게 전달한다.
+
+![img.png](images/WebSecurity.png)
