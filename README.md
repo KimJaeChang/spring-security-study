@@ -1,4 +1,5 @@
 + ## Spring Security
+  + Spring Security는 모두 Filter 기반으로 움직인다.
 
 + ### 자동설정의 의한 기본 보안 작동
   + 서버가 기동되면 Spring security의 초기화 작업 및 보안 설정이 이루어진다. 
@@ -31,7 +32,7 @@
   + 4. SecurityConfigurer의 init(B builder), configure(B builder) 메소드를 통해 초기화 작업 진행 (매개변수로 SecurityBuilder를 받는다.)
 
 
-![img.png](images/InitialReset.png)
+![img.png](images/InitialReset-1.png)
 ![img.png](images/InitialReset-2.png)
 
 + ### Security FilterChain
@@ -58,3 +59,32 @@
     + WebSecurity로 FilterChainProxy를 만들 수 있다.
 
 ![img.png](images/WebSecurity.png)
+
++ ### Filter
+  + 서블릿 필터는 웹 애플리케이션에서 클라이언트의 요청과 서버의 응답을 가공하거나 검사하는데 사용되는 구성 요소이다.
+  + 서블릿 필터는 클라이언트의 요청이 서블릿에 도달하기 전이나 서블릿이 응답을 클라이언트에게 보내기 전에 특정 작업을 수행할 수 있다.
+  + 서플릿 필터는 서블릿 컨테이너(WAS)에서 생성되고 실행되고 종료된다. 
+
+![img.png](images/Filter.png)
+
++ ### DelegatingFilterProxy
+  + DelegatingFilterProxy는 서블릿 컨테이너(WAS)에서 생성한다.
+  + DelegatingFilterProxy는 모든 Request에 대해 거치는 단계이다.
+  + 기본적으로 Spring은 Filter에서 AOP나 DI를 사용을 하지 못한다.
+    하지만 DelegatingFilterProxy를 통해 Spring에서도 Filter라는 타입의 클래스들을 Bean으로 생성해서
+    Filter가 AOP나 DI를 같은 Spring의 기능들을 가지고서 처리를 할 수 있다.
+  + DelegatingFilterProxy는 Spring에서 사용되는 특별한 서블릿 필터로, 서블릿 컨테이너와 Spring 애플리케이션 컨텍스트간의 연결고리 역활을 하는 필터이다.
+  + DelegatingFilterProxy는 서블릿 필터의 기능을 수행하는 동시에 스프링의 의존성 주입 및 빈 관리 기능과 연동되도록 설계뙨 필터라 할 수 있다.
+  + DelegatingFilterProxy는 <span style="color:red"><U>**springSecurityFilterChain**</U></span> 이름으로 생성된 Bean을 ApplicationContext 에서 찾아 요청을 위임한다.
+  + 실제 보안처리를 하지 않는다.
+
+![img.png](images/DelegatingFilterProxy.png)
+
++ ### FilterChainProxy
+  + <span style="color:red"><U>**springSecurityFilterChain**</U></span> 의 이름으로 생성되는 Filter Bean으로서 DelegatingFilterProxy으로부터 요청을 위임 받고 보안 처리 역활을 한다.
+  + 내부적으로 하나 이상의 SecurityFilterChain 객체들을 가지고 있으며 요청 URL 정보를 기준으로 적절한 SecurityFilterChain 을 선택하여 필터들을 호출한다.
+  + HttpSecurity 를 통해 API 추가시 관련 필터들이 추가된다.
+  + 사용자의 요청을 Filter 순서대로 호출함으로 보안 기능을 동작시키고 필요 시 직접 필터를 생성해서 기존의 Filter 전, 후로 추가 가능하다.
+
+![img.png](images/FilterChainProxy-1.png)
+![img.png](images/FilterChainProxy-2.png)
